@@ -1,0 +1,47 @@
+
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <div class="container-lg">
+        <a class="navbar-brand" href=""{{ path('home') }}>Gestion Absence</a>
+
+        <button class="navbar-toggler me-1" type="button" data-bs-toggle="collapse"
+                data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
+                aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            {# Margin until the end #}
+            <ul class="navbar-nav mb-2 mb-lg-0 me-auto ms-2">
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ path('chart_organization') }}">Trombinoscope</a>
+                </li>
+
+            </ul>
+
+
+            <ul class="navbar-nav mb-2 mb-lg-0 ml-auto ms-2">
+                <li class="nav-item dropdown">
+                    {% if app.user %}
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            Bonjour {{ app.user.fullName }}
+                        </a>
+                        <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                            <a href="{{ path('app_logout') }}" class="dropdown-item">Déconnexion</a>
+                        </ul>
+                    {% endif %}
+                </li>
+            </ul>
+
+
+        </div>
+    </div>
+</nav>
+
+{% for label, messages in app.flashes %}
+    <div class="container">
+        <div class="alert alert-{{ label }}">
+            {% for message in messages %}
+                <p>{{ message | raw }}</p>
+            {% endfor %}
+        </div>
+    </div>
+{% endfor %}
