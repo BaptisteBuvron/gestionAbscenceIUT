@@ -30,27 +30,22 @@ class Student
     private $lastName;
 
 
-
     /**
      * @ORM\Column(type="string", length=255)
      */
     private $picture;
 
-    /**
-     * @ORM\ManyToOne(targetEntity=Promotion::class, inversedBy="students")
-     * @ORM\JoinColumn(nullable=false)
-     */
-    private $promotion;
-
-    /**
-     * @ORM\ManyToOne(targetEntity=GroupTP::class, inversedBy="students")
-     */
-    private $groupTP;
 
     /**
      * @ORM\OneToMany(targetEntity=Absence::class, mappedBy="student", orphanRemoval=true)
      */
     private $absences;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=Group::class, inversedBy="students")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $groupClass;
 
     public function __construct()
     {
@@ -94,29 +89,6 @@ class Student
         return $this;
     }
 
-    public function getPromotion(): ?Promotion
-    {
-        return $this->promotion;
-    }
-
-    public function setPromotion(?Promotion $promotion): self
-    {
-        $this->promotion = $promotion;
-
-        return $this;
-    }
-
-    public function getGroupTP(): ?GroupTP
-    {
-        return $this->groupTP;
-    }
-
-    public function setGroupTP(?GroupTP $groupTP): self
-    {
-        $this->groupTP = $groupTP;
-
-        return $this;
-    }
 
     public function getPicture(): ?string
     {
@@ -160,6 +132,18 @@ class Student
 
     public function __toString(): string
     {
-        return $this->getFullName() . " - " . $this->getGroupTP()->getName();
+        return $this->getFullName() . " - " . $this->getGroupClass()->getName();
+    }
+
+    public function getGroupClass(): ?Group
+    {
+        return $this->groupClass;
+    }
+
+    public function setGroupClass(?Group $groupClass): self
+    {
+        $this->groupClass = $groupClass;
+
+        return $this;
     }
 }

@@ -3,6 +3,7 @@
 namespace App\DataFixtures;
 
 use App\Entity\Department;
+use App\Entity\Group;
 use App\Entity\GroupTD;
 use App\Entity\GroupTP;
 use App\Entity\Promotion;
@@ -52,41 +53,38 @@ class AppFixtures extends Fixture
         $yearResponsable->setRoles(['ROLE_YEAR_RESPONSIBLE']);
         $manager->persist($yearResponsable);
 
-        $td11 = new GroupTD();
+        $td11 = new Group();
         $td11->setName('TD11');
 
-        $td12 = new GroupTD();
+        $td12 = new Group();
         $td12->setName('TD12');
 
-        $tp11A = new GroupTP();
+        $tp11A = new Group();
         $tp11A->setName('TP11A');
 
-        $tp11B = new GroupTP();
+        $tp11B = new Group();
         $tp11B->setName('TP11B');
 
-        $tp12A = new GroupTP();
+        $tp12A = new Group();
         $tp12A->setName('TP12A');
 
-        $tp12B = new GroupTP();
+        $tp12B = new Group();
         $tp12B->setName('TP12B');
 
-        $td11->addGroupsTP($tp11A);
-        $td11->addGroupsTP($tp11B);
 
-        $td12->addGroupsTP($tp12A);
-        $td12->addGroupsTP($tp12B);
+        $td11->addGroup($tp11A);
+        $td11->addGroup($tp11B);
 
-        $info2 = new Promotion();
+        $td12->addGroup($tp12A);
+        $td12->addGroup($tp12B);
+
+        $info2 = new Group();
         $info2->setName('Info2');
-        $info2->setYear(2022);
+        $info2->setIsParent(true);
 
-        $dptInfo = new Department();
-        $dptInfo->setName('Info');
+        $info2->addGroup($td11);
+        $info2->addGroup($td12);
 
-        $info2->setDepartment($dptInfo);
-
-        $td11->setPromotion($info2);
-        $td12->setPromotion($info2);
 
         $genres = ['male', 'female'];
         $groups = [$tp11A,$tp11B, $tp12A, $tp12B];
@@ -96,10 +94,8 @@ class AppFixtures extends Fixture
             $student = new Student();
             $student->setFirstName($faker->firstName($genre));
             $student->setLastName($faker->lastName($genre));
-            $student->setPromotion($info2);
             $student->setPicture('https://randomuser.me/api/portraits/'. ($genre === 'male' ? 'men/' : 'women/').$faker->numberBetween(1,99).'.jpg');
-            $student->setPromotion($info2);
-            $student->setGroupTP($groups[$idGroup]);
+            $student->setGroupClass($groups[$idGroup]);
             $idGroup++;
             if ($idGroup === 4) {
                 $idGroup = 0;
@@ -113,7 +109,6 @@ class AppFixtures extends Fixture
         $manager->persist($tp12A);
         $manager->persist($tp12B);
         $manager->persist($info2);
-        $manager->persist($dptInfo);
 
 
         $manager->flush();

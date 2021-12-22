@@ -24,7 +24,7 @@ class Absence
     private $student;
 
     /**
-     * @ORM\Column(type="integer")
+     * @ORM\Column(type="integer", nullable=true)
      */
     private $lateTime;
 
