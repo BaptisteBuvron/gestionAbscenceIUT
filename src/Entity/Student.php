@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\StudentRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -44,6 +46,16 @@ class Student
      * @ORM\ManyToOne(targetEntity=GroupTP::class, inversedBy="students")
      */
     private $groupTP;
+
+    /**
+     * @ORM\OneToMany(targetEntity=Absence::class, mappedBy="student", orphanRemoval=true)
+     */
+    private $absences;
+
+    public function __construct()
+    {
+        $this->absences = new ArrayCollection();
+    }
 
 
     public function getId(): ?int
@@ -113,6 +125,41 @@ class Student
 
     public function getFullName(): string
     {
-        return $this->firstName . ' ' . $this->lastName;
+        return $this->lastName . ' ' . $this->firstName;
+    }
+
+    /**
+     * @return Collection|Absence[]
+     */
+    public function getAbsences(): Collection
+    {
+        return $this->absences;
+    }
+
+    public function addAbsence(Absence $absence): self
+    {
+        if (!$this->absences->contains($absence)) {
+            $this->absences[] = $absence;
+            $absence->setStudent($this);
+        }
+
+        return $this;
+    }
+
+    public function removeAbsence(Absence $absence): self
+    {
+        if ($this->absences->removeElement($absence)) {
+            // set the owning side to null (unless already changed)
+            if ($absence->getStudent() === $this) {
+                $absence->setStudent(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function __toString(): string
+    {
+        return $this->getFullName() . " - " . $this->getGroupTP()->getName();
     }
 }
