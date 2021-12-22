@@ -93,5 +93,3 @@ fabric.properties
 /.tmp
 !.gitignore
 !.gitkeep
-
-migrations/

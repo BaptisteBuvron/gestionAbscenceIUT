@@ -1,0 +1,24 @@
+{% extends 'base.html.twig' %}
+
+
+{% block title %}
+Créer un report
+{% endblock %}
+
+
+{% form_theme form 'absence/_absence.html.twig' %}
+
+{% block body %}
+        <h1>Création d'un rapport d'absences</h1>
+        {{ form_start(form) }}
+        {{ form_widget(form) }}
+        <button type="submit" class="btn btn-primary">Créer</button>
+        {{ form_end(form) }}
+
+{% endblock %}
+
+
+{% block javascripts %}
+        {{ parent() }}
+        <script src="{{ asset('js/absencesReport.js') }}"></script>
+{% endblock %}
