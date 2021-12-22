@@ -25,10 +25,8 @@ class AbsenceType extends AbstractType
                 'label' => 'Élève',
                 'placeholder' => 'Choisissez un élève',
                 'required' => true,
-                'query_builder' => function (StudentRepository $repository) {
-                    return $repository->createQueryBuilder('s')
-                        ->orderBy('s.lastName', 'ASC');
-                }
+                'data' => $options['students']
+
             ])
         ;
     }
@@ -36,7 +34,7 @@ class AbsenceType extends AbstractType
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
-            'data_class' => Absence::class,
+            'students' => [],
         ]);
     }
 }

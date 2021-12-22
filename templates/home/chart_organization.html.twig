@@ -6,26 +6,24 @@
 
     <div class="container">
         <h1>Trombinoscope</h1>
-        {% for department in departments %}
-            <h2>Département : {{ department.name }}</h2>
-            {% for promotion in department.promotions %}
-                <h3>Promotion : {{ promotion.name }}</h3>
-                <div class="d-flex flex-row flex-wrap justify-content-around mb-3 align-items-center">
+        {% for group in groups %}
+            <h2>{{ group.name }}</h2>
+            <div class="d-flex flex-row flex-wrap justify-content-around mb-3 align-items-center">
 
-                    {% for student in promotion.students %}
-                        <div class="card mb-3" style="width: 18rem;">
-                            <img class="card-img-top" src="{{ student.picture }}" alt="Card image cap">
-                            <div class="card-body">
-                                <h5 class="card-title">{{ student.fullName }}</h5>
-                                <p class="card-text">Groupe TD : {{ student.groupTP.groupTD.name }}</p>
-                                <p class="card-text">Groupe TP : {{ student.groupTP.name }}</p>
-                                <a href="#" class="btn btn-primary">Voir les absences</a>
-                            </div>
+                {% for student in group.getAllStudents %}
+                    <div class="card mb-3" style="width: 18rem;">
+                        <img class="card-img-top" src="{{ student.picture }}" alt="Card image cap">
+                        <div class="card-body">
+                            <h5 class="card-title">{{ student.fullName }}</h5>
+                            {% if student.groupClass.groupParent.name %}
+                            <p class="card-text">Groupe TD : {{ student.groupClass.groupParent.name }}</p>
+                            {% endif %}
+                            <p class="card-text">Groupe TP : {{ student.groupClass.name }}</p>
+                            <a href="#" class="btn btn-primary">Voir les absences</a>
                         </div>
-                    {% endfor %}
-                </div>
-
-            {% endfor %}
+                    </div>
+                {% endfor %}
+            </div>
         {% endfor %}
     </div>
 

@@ -34,9 +34,21 @@ class AbsencesReport
      */
     private $courseDuration;
 
+    /**
+     * @ORM\ManyToMany(targetEntity=Student::class)
+     */
+    private $studentsGroup;
+
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $name;
+
+
     public function __construct()
     {
         $this->absences = new ArrayCollection();
+        $this->studentsGroup = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -94,6 +106,54 @@ class AbsencesReport
     public function setCourseDuration(int $courseDuration): self
     {
         $this->courseDuration = $courseDuration;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection
+     */
+    public function getStudents()
+    {
+        $students = new ArrayCollection();
+        foreach ($this->absences as $absence) {
+            $students->add($absence->getStudent());
+        }
+        return $students;
+    }
+
+    /**
+     * @return Collection|Student[]
+     */
+    public function getStudentsGroup(): Collection
+    {
+        return $this->studentsGroup;
+    }
+
+    public function addStudentsGroup(Student $studentsGroup): self
+    {
+        if (!$this->studentsGroup->contains($studentsGroup)) {
+            $this->studentsGroup[] = $studentsGroup;
+        }
+
+        return $this;
+    }
+
+    public function removeStudentsGroup(Student $studentsGroup): self
+    {
+        $this->studentsGroup->removeElement($studentsGroup);
+
+        return $this;
+    }
+
+    public function getName(): ?string
+    {
+        return $this->name;
+    }
+
+    public function setName(string $name): self
+    {
+        $this->name = $name;
 
         return $this;
     }

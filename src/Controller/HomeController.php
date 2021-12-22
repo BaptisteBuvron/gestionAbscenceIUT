@@ -2,7 +2,7 @@
 
 namespace App\Controller;
 
-use App\Entity\Department;
+use App\Entity\Group;
 use Doctrine\ORM\EntityManagerInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -22,11 +22,9 @@ class HomeController extends AbstractController
     #[Route('/chart', name: 'chart_organization')]
     public function chartOrganization(EntityManagerInterface $manager): Response
     {
-        $departments = $manager->getRepository(Department::class)->findAll();
-
-
+        $groups = $manager->getRepository(Group::class)->findBy(['isParent' => true]);
         return $this->render('home/chart_organization.html.twig', [
-            'departments' => $departments
+            'groups' => $groups
         ]);
     }
 
