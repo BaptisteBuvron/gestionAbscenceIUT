@@ -1,0 +1,40 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+
+    <h1>Absence N°{{ absence.id }}  </h1>
+    <p>{% if absence.isValid == true %}
+            <span class="badge bg-success">Justifié</span>
+        {% elseif absence.isValid is null %}
+            <span class="badge bg-secondary">A Justifié</span>
+        {% else %}
+            <span class="badge bg-danger">Non Justifié</span>
+        {% endif %}</p>
+    <div class="row">
+        <div class="col-md-8">
+            <div>
+
+                <p>Le {{ absence.absencesReport.date | date('d/m/Y') }} pour {{ absence.absencesReport.name }}</p>
+                <p>Crée par {{ absence.absencesReport.teacher.fullNameSubject }}</p>
+                <p>Temps de retards : {{ absence.lateTime }}</p>
+                <p>Motif : {{ absence.reason }}</p>
+
+
+
+            </div>
+        </div>
+        <div class="col-md-4">
+            <img src="{{ absence.student.picture }}" alt="absence" class="img-responsive">
+            <p>Elève : {{ absence.student.fullName }}</p>
+            <p>Groupe : {{ absence.student.groupClass.name }}</p>
+        </div>
+    </div>
+    <hr>
+    <h2>Justificatif : </h2>
+
+{% endblock %}
+
+{% block title %}
+    Absence {{ absence.student.fullName }}
+{% endblock %}
+

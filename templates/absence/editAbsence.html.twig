@@ -1,0 +1,20 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1>Edition de l'absence n° {{ absence.id }}</h1>
+    <p>Etudiant : {{ absence.student.fullName }}</p>
+    <p>Cours de {{ absence.absencesReport.teacher.fullName }} ({{ absence.absencesReport.teacher.subject }})</p>
+    <p>Date : {{ absence.absencesReport.date | date('d-m-Y m:s') }}</p>
+
+    <hr>
+
+    {{ form_start(form) }}
+    {{ form_widget(form) }}
+    <button type="submit" class="btn btn-primary">Modifier</button>
+    {{ form_end(form) }}
+{% endblock %}
+
+{% block title %}
+Edition Absence n° {{ absence.id }}
+{% endblock %}
+

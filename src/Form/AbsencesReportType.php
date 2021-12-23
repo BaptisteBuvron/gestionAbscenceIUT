@@ -6,6 +6,7 @@ use App\Repository\TeacherRepository;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -24,17 +25,30 @@ class AbsencesReportType extends AbstractType
                     'placeholder' => 'Nom du rapport',
                 ],
             ])
+            ->add('date', DateTimeType::class, [
+                'label' => 'Date du cours',
+                'required' => true,
+                'widget' => 'single_text',
+                'html5' => true,
+                'with_seconds' => false,
+                'attr' => [
+                    'placeholder' => 'Date du cours',
+                ],
+            ])
             ->add('courseDuration', IntegerType::class,[
                 'label' => 'Durée du cours (minutes)',
+                'required' => true,
+                'empty_data' => 120,
             ])
             ->add('teacher', EntityType::class, [
                 'class' => Teacher::class,
-                'choice_label' => 'fullname',
+                'choice_label' => 'fullnameSubject',
                 'placeholder' => 'Choose a teacher',
                 'query_builder' => function (TeacherRepository $repository) {
                     return $repository->createQueryBuilder('t')
                         ->orderBy('t.lastName', 'ASC');
                 },
+                'disabled' => $options['disabledChoiceTeacher'],
             ])
         ->add('students', ChoiceType::class, [
             'label' => 'Élèves',
@@ -54,7 +68,8 @@ class AbsencesReportType extends AbstractType
     {
         $resolver->setDefaults([
             'students' => [],
-            'studentsSelected' => []
+            'studentsSelected' => [],
+            'disabledChoiceTeacher' => false,
         ]);
     }
 }

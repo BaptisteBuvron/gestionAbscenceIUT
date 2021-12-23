@@ -2,7 +2,7 @@
 
 
 {% block title %}
-Créer un report
+Créer un rapport
 {% endblock %}
 
 
@@ -10,16 +10,9 @@ Créer un report
 
 {% block body %}
         <h1>Création d'un rapport d'absences</h1>
-        <h2>Groupe : {{ group.name }}</h2>
         {{ form_start(form) }}
         {{ form_widget(form) }}
         <button type="submit" class="btn btn-primary">Créer</button>
         {{ form_end(form) }}
 
-{% endblock %}
-
-
-{% block javascripts %}
-        {{ parent() }}
-        <script src="{{ asset('js/absencesReport.js') }}"></script>
 {% endblock %}

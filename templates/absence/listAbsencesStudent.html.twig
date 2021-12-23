@@ -1,0 +1,61 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1>Absence de {{ student.fullName }}</h1>
+    <div class="row">
+        <div class="col">
+            <p>Nombre d'absences : {{ student.absences | length }}</p>
+            <p>Nombre d'absences non justifié : {{ student.getNumberUnjustifiedAbsences }}</p>
+        </div>
+        <div class="col">
+            <img src="{{ student.picture }}" alt="absence" class="img-responsive">
+            <p>Elève : {{ student.fullName }}</p>
+            <p>Groupe : {{ student.groupClass.name }}</p>
+        </div>
+    </div>
+
+
+    <div class="table-responsive">
+
+        <table class="table table-striped table-bordered text-center">
+            <thead>
+            <tr>
+                <th>Date</th>
+                <th>Professeur</th>
+                <th>Temps de retards</th>
+                <th>Valide ?</th>
+                <th>Voir</th>
+                <th>Modifier</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for absence in student.absences %}
+                <tr>
+                    <td>{{ absence.absencesReport.date | date }}</td>
+                    <td>{{ absence.absencesReport.teacher.fullName }}</td>
+                    <td>{{ absence.lateTime }}</td>
+                    <td>
+                        {% if absence.isValid == true %}
+                            <span class="badge bg-success">Justifié</span>
+                        {% elseif absence.isValid is null %}
+                            <span class="badge bg-secondary">A Justifié</span>
+                        {% else %}
+                            <span class="badge bg-danger">Non Justifié</span>
+                        {% endif %}
+                    </td>
+                    <td><a href="{{ path('absence_show', {'id' : absence.id}) }}" class="btn btn-primary">Voir</a></td>
+                    <td>
+                        <a href="{{ path('absence_edit', {'id' : absence.id}) }}" class="btn btn-primary">Modifier</a>
+                    </td>
+                </tr>
+            {% endfor %}
+            </tbody>
+
+        </table>
+    </div>
+{% endblock %}
+
+{% block title %}
+    Absence de {{ student.fullName }}
+{% endblock %}
+

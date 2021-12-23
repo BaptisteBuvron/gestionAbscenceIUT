@@ -36,7 +36,12 @@ class Absence
     /**
      * @ORM\Column(type="boolean", nullable=true)
      */
-    private $isValid;
+    private $isValid = null;
+
+    /**
+     * @ORM\Column(type="text", length=255, nullable=true)
+     */
+    private $reason = "A definir";
 
 
     public function getId(): ?int
@@ -91,6 +96,20 @@ class Absence
 
         return $this;
     }
+
+    public function getReason(): ?string
+    {
+        return $this->reason;
+    }
+
+    public function setReason(?string $reason): self
+    {
+        $this->reason = $reason;
+
+        return $this;
+    }
+
+
 
 
 }

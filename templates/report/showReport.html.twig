@@ -1,0 +1,80 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+    Rapport {{ absenceReport.id }}
+{% endblock %}
+
+{% block body %}
+    <h1>Rapport {{ absenceReport.id }}</h1>
+
+    <p>Nom du rapport : {{ absenceReport.name }}</p>
+    <p>Date du rapport : {{ absenceReport.date | date }}</p>
+    <p>Durée du cours : {{ absenceReport.courseDuration }}</p>
+    <p>Professeur : {{ absenceReport.teacher.fullNameSubject }}</p>
+    <p>Nombre d'élèves : {{ absenceReport.studentsGroup | length }}</p>
+    <div class="row">
+        <div class="col">
+            <p>Liste des étudiants absents: </p>
+            <ul>
+                {% for student in absenceReport.studentsAbsent %}
+                    <li>{{ student.fullName }}</li>
+                {% endfor %}
+            </ul>
+        </div>
+        <div class="col">
+            <p>Liste des étudiants présents: </p>
+            <ul>
+                {% for student in absenceReport.studentsGroup %}
+                    {% if student not in absenceReport.studentsAbsent %}
+                        <li>{{ student.fullName }}</li>
+
+                    {% endif %}
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+
+    <h2>Liste des absences correspondantes : </h2>
+
+    <div class="table-responsive">
+
+        <table class="table table-striped table-bordered text-center">
+            <thead>
+            <tr>
+                <th>Nom</th>
+                <th>Prénom</th>
+                <th>Valide ?</th>
+                <th>Justificatif</th>
+                <th>Voir</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for absence in absenceReport.absences %}
+                <tr>
+                    <td>{{ absence.student.lastName }}</td>
+                    <td>{{ absence.student.firstName }}</td>
+                    <td>
+                        {% if absence.isValid == true %}
+                            <span class="badge bg-success">Justifié</span>
+                        {% elseif absence.isValid is null %}
+                            <span class="badge bg-secondary">A Justifié</span>
+                        {% else %}
+                            <span class="badge bg-danger">Non Justifié</span>
+                        {% endif %}
+                    </td>
+
+                    <td>Justificatif</td>
+                    <td><a href="{{ path('absence_show', {'id' : absence.id}) }}" class="btn btn-primary">Voir</a></td>
+                </tr>
+            {% endfor %}
+            </tbody>
+
+        </table>
+    </div>
+
+
+
+
+
+{% endblock %}
+
