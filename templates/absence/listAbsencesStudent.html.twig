@@ -25,7 +25,9 @@
                 <th>Temps de retards</th>
                 <th>Valide ?</th>
                 <th>Voir</th>
+                {% if is_granted('ROLE_ADMIN') %}
                 <th>Modifier</th>
+                {% endif %}
             </tr>
             </thead>
             <tbody>
@@ -44,9 +46,12 @@
                         {% endif %}
                     </td>
                     <td><a href="{{ path('absence_show', {'id' : absence.id}) }}" class="btn btn-primary">Voir</a></td>
-                    <td>
-                        <a href="{{ path('absence_edit', {'id' : absence.id}) }}" class="btn btn-primary">Modifier</a>
-                    </td>
+                    {% if is_granted('ROLE_ADMIN') %}
+                        <td>
+                            <a href="{{ path('absence_edit', {'id' : absence.id}) }}" class="btn btn-primary">Modifier</a>
+                        </td>
+                    {% endif %}
+
                 </tr>
             {% endfor %}
             </tbody>

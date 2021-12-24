@@ -31,6 +31,13 @@
     </div>
     <hr>
     <h2>Justificatif : </h2>
+    <div class="text-center">
+    {% if absence.proofFileName %}
+        <embed src="{{ vich_uploader_asset(absence, 'proofFile', 'App\\Entity\\Absence' ) }}" width=900 height=600 type='application/pdf'/>
+    {% else %}
+        <p>Aucun justificatif</p>
+    {% endif %}
+        </div
 
 {% endblock %}
 
