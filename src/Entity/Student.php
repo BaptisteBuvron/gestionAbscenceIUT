@@ -146,4 +146,15 @@ class Student
 
         return $this;
     }
+
+    public function getNumberUnjustifiedAbsences(): int
+    {
+        $number = 0;
+        foreach ($this->absences as $absence) {
+            if ($absence->getIsValid() !== null && $absence->getIsValid() == false) {
+                $number++;
+            }
+        }
+        return $number;
+    }
 }

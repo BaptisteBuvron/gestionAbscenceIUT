@@ -44,6 +44,11 @@ class AbsencesReport
      */
     private $name;
 
+    /**
+     * @ORM\Column(type="datetime")
+     */
+    private $date;
+
 
     public function __construct()
     {
@@ -113,7 +118,7 @@ class AbsencesReport
     /**
      * @return Collection
      */
-    public function getStudents()
+    public function getStudentsAbsent()
     {
         $students = new ArrayCollection();
         foreach ($this->absences as $absence) {
@@ -156,5 +161,28 @@ class AbsencesReport
         $this->name = $name;
 
         return $this;
+    }
+
+    public function getDate(): ?\DateTime
+    {
+        return $this->date;
+    }
+
+    public function setDate(\DateTime $date): self
+    {
+        $this->date = $date;
+
+        return $this;
+    }
+
+    public function getNumberUnjustifiedAbsences()
+    {
+        $number = 0;
+        foreach ($this->absences as $absence) {
+            if ($absence->getIsValid() !== null && $absence->getIsValid() == false) {
+                $number++;
+            }
+        }
+        return $number;
     }
 }

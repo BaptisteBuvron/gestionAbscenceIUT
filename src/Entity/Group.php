@@ -167,4 +167,9 @@ class Group
 
         return $students;
     }
+
+    public function __toString()
+    {
+        return $this->name;
+    }
 }

@@ -1,7 +1,7 @@
 
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
     <div class="container-lg">
-        <a class="navbar-brand" href=""{{ path('home') }}>Gestion Absence</a>
+        <a class="navbar-brand" href="{{ path('home') }}">Gestion Absence</a>
 
         <button class="navbar-toggler me-1" type="button" data-bs-toggle="collapse"
                 data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
@@ -14,6 +14,11 @@
                 <li class="nav-item">
                     <a class="nav-link" href="{{ path('chart_organization') }}">Trombinoscope</a>
                 </li>
+                {% if is_granted('ROLE_YEAR_RESPONSIBLE')  %}
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ path('report_absences_list') }}">Rapports d'absences</a>
+                </li>
+                {% endif %}
 
             </ul>
 

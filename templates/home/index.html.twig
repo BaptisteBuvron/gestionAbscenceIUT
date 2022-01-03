@@ -3,9 +3,14 @@
 {% block title %}GestionAbscence{% endblock %}
 
 {% block body %}
-    <div class="container">
-        <h1>Gestion des absences : </h1>
+
+    <h1>Création d'un rapport d'absences: </h1>
+
+    {{ form_start(form) }}
+    {{ form_widget(form) }}
+    <button type="submit" class="btn btn-primary">Créer le rapport</button>
+    {{ form_end(form) }}
 
 
-    </div>
+
 {% endblock %}
