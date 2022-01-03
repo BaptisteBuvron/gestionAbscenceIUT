@@ -16,11 +16,15 @@
                         <div class="card-body">
                             <h5 class="card-title">{{ student.fullName }}</h5>
                             {% if student.groupClass.groupParent.name %}
-                            <p class="card-text">Groupe TD : {{ student.groupClass.groupParent.name }}</p>
+                                <p class="card-text">Groupe TD : {{ student.groupClass.groupParent.name }}</p>
                             {% endif %}
                             <p class="card-text">Groupe TP : {{ student.groupClass.name }}</p>
-                            <a href="{{ path('student_absences_list', {'id' : student.id}) }}" class="btn btn-primary">Voir les absences</a>
+                            {% if is_granted('ROLE_YEAR_RESPONSIBLE') %}
+                                <a href="{{ path('student_absences_list', {'id' : student.id}) }}"
+                                   class="btn btn-primary">Voir les absences</a>
+                            {% endif %}
                         </div>
+
                     </div>
                 {% endfor %}
             </div>

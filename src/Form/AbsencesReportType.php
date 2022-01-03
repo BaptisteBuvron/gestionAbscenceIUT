@@ -42,8 +42,9 @@ class AbsencesReportType extends AbstractType
             ])
             ->add('teacher', EntityType::class, [
                 'class' => Teacher::class,
+                'label' => 'Enseignant',
                 'choice_label' => 'fullnameSubject',
-                'placeholder' => 'Choose a teacher',
+                'placeholder' => 'Choisir un enseignant',
                 'query_builder' => function (TeacherRepository $repository) {
                     return $repository->createQueryBuilder('t')
                         ->orderBy('t.lastName', 'ASC');
