@@ -151,4 +151,17 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     {
         return $this->getFullName();
     }
+
+    public function __serialize(): array
+    {
+        return [
+            'id' => $this->id,
+            'email' => $this->email,
+            'roles' => $this->roles,
+            'firstName' => $this->firstName,
+            'lastName' => $this->lastName,
+            'password' => $this->password,
+        ];
+
+    }
 }
