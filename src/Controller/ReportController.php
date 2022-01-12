@@ -18,7 +18,7 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class ReportController extends AbstractController
 {
-    #[Route("/reports", name : "report_absences_list")]
+    #[Route("/reports", name: "report_absences_list")]
     #[IsGranted('ROLE_YEAR_RESPONSIBLE')]
     public function index(EntityManagerInterface $manager): Response
     {
@@ -33,7 +33,7 @@ class ReportController extends AbstractController
 
     #[Route('/report/{id}/create', name: 'report_absence_create')]
     #[IsGranted('ROLE_TEACHER')]
-    public function createReport(Group $group, Request $request,EntityManagerInterface $manager): Response
+    public function createReport(Group $group, Request $request, EntityManagerInterface $manager): Response
     {
         $students = $group->getAllStudents();
 
@@ -57,7 +57,7 @@ class ReportController extends AbstractController
             if ($user instanceof Teacher) {
                 $absenceReport->setTeacher($user);
             }
-            foreach ($students as $student){
+            foreach ($students as $student) {
                 $absenceReport->addStudentsGroup($student);
             }
             $this->crudAbsenceReport($form, $students, $absenceReport, $manager);
@@ -70,71 +70,15 @@ class ReportController extends AbstractController
                     'id' => $absenceReport->getId()
                 ]);
             }
-            return $this->redirectToRoute('home');
+            return $this->redirectToRoute('new_report');
 
         }
 
 
         return $this->render('report/createReport.html.twig', [
             'form' => $form->createView(),
-            'absenceReport'=> $absenceReport
-        ]);
-    }
-
-    #[Route('/report/{id}/edit', name: 'report_absence_edit')]
-    #[IsGranted('ROLE_ADMIN')]
-    public function editReport(AbsencesReport $absenceReport, Request $request,EntityManagerInterface $manager): Response
-    {
-        $students = $absenceReport->getStudentsGroup();
-        $studentsSelected = $absenceReport->getStudentsAbsent();
-
-
-
-
-        $form = $this->createForm(AbsencesReportType::class, $absenceReport, [
-            'students' => $students->toArray(),
-            'studentsSelected' => $studentsSelected->toArray()
-        ]);
-        $form->handleRequest($request);
-
-        if ($form->isSubmitted() && $form->isValid()) {
-            $this->crudAbsenceReport($form, $students, $absenceReport, $manager);
-            $manager->persist($absenceReport);
-            $manager->flush();
-            $this->addFlash('success', "Le rapport a été correctement été modifié !");
-            return $this->redirectToRoute('report_absence_edit', [
-                'id' => $absenceReport->getId()
-            ]);
-        }
-
-
-        return $this->render('report/editReport.html.twig', [
-            'form' => $form->createView(),
-            'absenceReport'=> $absenceReport
-        ]);
-    }
-
-    #[Route('/report/{id}', name: 'report_absence_show')]
-    #[IsGranted('ROLE_YEAR_RESPONSIBLE')]
-    public function showReport(AbsencesReport $absenceReport): Response
-    {
-        return $this->render('report/showReport.html.twig', [
             'absenceReport' => $absenceReport
         ]);
-    }
-
-    #[Route('/report/{id}/delete', name: 'report_absence_delete')]
-    #[IsGranted('ROLE_ADMIN')]
-    public function deleteReport(AbsencesReport $absenceReport, EntityManagerInterface $manager): Response
-    {
-        //TODO : delete csrf token
-        foreach ($absenceReport->getAbsences() as $absence){
-            $manager->remove($absence);
-        }
-        $manager->remove($absenceReport);
-        $manager->flush();
-        $this->addFlash('success', "Le rapport a été correctement été supprimé !");
-        return $this->redirectToRoute('report_absences_list');
     }
 
     /**
@@ -179,6 +123,59 @@ class ReportController extends AbstractController
         }
     }
 
+    #[Route('/report/{id}/edit', name: 'report_absence_edit')]
+    #[IsGranted('ROLE_ADMIN')]
+    public function editReport(AbsencesReport $absenceReport, Request $request, EntityManagerInterface $manager): Response
+    {
+        $students = $absenceReport->getStudentsGroup();
+        $studentsSelected = $absenceReport->getStudentsAbsent();
+
+
+        $form = $this->createForm(AbsencesReportType::class, $absenceReport, [
+            'students' => $students->toArray(),
+            'studentsSelected' => $studentsSelected->toArray()
+        ]);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $this->crudAbsenceReport($form, $students, $absenceReport, $manager);
+            $manager->persist($absenceReport);
+            $manager->flush();
+            $this->addFlash('success', "Le rapport a été correctement été modifié !");
+            return $this->redirectToRoute('report_absence_edit', [
+                'id' => $absenceReport->getId()
+            ]);
+        }
+
+
+        return $this->render('report/editReport.html.twig', [
+            'form' => $form->createView(),
+            'absenceReport' => $absenceReport
+        ]);
+    }
+
+    #[Route('/report/{id}', name: 'report_absence_show')]
+    #[IsGranted('ROLE_YEAR_RESPONSIBLE')]
+    public function showReport(AbsencesReport $absenceReport): Response
+    {
+        return $this->render('report/showReport.html.twig', [
+            'absenceReport' => $absenceReport
+        ]);
+    }
+
+    #[Route('/report/{id}/delete', name: 'report_absence_delete')]
+    #[IsGranted('ROLE_ADMIN')]
+    public function deleteReport(AbsencesReport $absenceReport, EntityManagerInterface $manager): Response
+    {
+        //TODO : delete csrf token
+        foreach ($absenceReport->getAbsences() as $absence) {
+            $manager->remove($absence);
+        }
+        $manager->remove($absenceReport);
+        $manager->flush();
+        $this->addFlash('success', "Le rapport a été correctement été supprimé !");
+        return $this->redirectToRoute('report_absences_list');
+    }
 
 
 }

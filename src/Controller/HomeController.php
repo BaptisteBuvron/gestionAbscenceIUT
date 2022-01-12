@@ -15,8 +15,8 @@ use Symfony\Component\Routing\Annotation\Route;
 class HomeController extends AbstractController
 {
 
-    #[Route('/', name: 'home')]
-    public function index(EntityManagerInterface $manager, Request $request): Response
+    #[Route('/', name: 'new_report')]
+    public function newReport(EntityManagerInterface $manager, Request $request): Response
     {
 
         $form = $this->createForm(ChooseGroupType::class);
@@ -27,7 +27,7 @@ class HomeController extends AbstractController
             return $this->redirectToRoute('report_absence_create', ['id' => $group->getId()]);
         }
 
-        return $this->render('home/index.html.twig',[
+        return $this->render('home/new_report.html.twig', [
             'form' => $form->createView()
         ]);
     }

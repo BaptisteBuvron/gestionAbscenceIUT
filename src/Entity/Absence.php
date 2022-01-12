@@ -168,10 +168,4 @@ class Absence
     }
 
 
-
-
-
-
-
-
 }

@@ -2,43 +2,77 @@
 
 {% block body %}
 
-    <h1>Absence N°{{ absence.id }}  </h1>
-    <p>{% if absence.isValid == true %}
-            <span class="badge bg-success">Justifié</span>
-        {% elseif absence.isValid is null %}
-            <span class="badge bg-secondary">A Justifié</span>
-        {% else %}
-            <span class="badge bg-danger">Non Justifié</span>
-        {% endif %}</p>
-    <div class="row">
-        <div class="col-md-8">
-            <div>
+    <div class="container-fluid px-md-4">
+        <div class="page-header min-height-300 border-radius-xl mt-4"
+             style="background-image: url('https://images.unsplash.com/photo-1531512073830-ba890ca4eba2?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1920&q=80');">
+            <h1 class="px-4">Absence N°{{ absence.id }}  </h1>
+            <span class="mask  bg-gradient-primary  opacity-6"></span>
+        </div>
+        <div class="card card-body mx-3 mx-md-4 mt-n6">
+            <div class="row gx-4 mb-2">
+                <div class="col-auto">
+                    <div class="avatar avatar-xl position-relative">
+                        <img src="{{ absence.student.picture }}" alt="profile_image"
+                             class="w-100 border-radius-lg shadow-sm">
+                    </div>
+                </div>
+                <div class="col-auto my-auto">
+                    <div class="h-100">
+                        <h5 class="mb-1">
+                            {{ absence.student.fullName }}
 
-                <p>Le {{ absence.absencesReport.date | date('d/m/Y') }} pour {{ absence.absencesReport.name }}</p>
-                <p>Crée par {{ absence.absencesReport.teacher.fullNameSubject }}</p>
-                <p>Temps de retards : {{ absence.lateTime }}</p>
-                <p>Motif : {{ absence.reason }}</p>
-
-
-
+                            {% if absence.isValid == true %}
+                                <span class="badge badge-success">Justifié</span>
+                            {% elseif absence.isValid is null %}
+                                <span class="badge bg-secondary">A Justifié</span>
+                            {% else %}
+                                <span class="badge bg-danger">Non Justifié</span>
+                            {% endif %}
+                        </h5>
+                        <p class="mb-0 font-weight-normal text-sm">
+                            {{ absence.student.groupClass.name }}
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="row">
+                    <div class="col-12 col-xl-4">
+                        <div class="card card-plain h-100">
+                            <div class="card-header pb-0 p-3">
+                                <h6 class="mb-0">Informations</h6>
+                            </div>
+                            <div class="card-body p-3">
+                                <ul class="list-group">
+                                    <li class="list-group-item border-0 ps-0 pt-0 text-sm"><strong class="text-dark">Date:</strong>
+                                        &nbsp; Le {{ absence.absencesReport.date | date('d/m/Y') }}
+                                        pour {{ absence.absencesReport.name }}</li>
+                                    <li class="list-group-item border-0 ps-0 text-sm"><strong
+                                                class="text-dark">Par:</strong>
+                                        &nbsp; {{ absence.absencesReport.teacher.fullNameSubject }}</li>
+                                    <li class="list-group-item border-0 ps-0 text-sm"><strong
+                                                class="text-dark">Temps:</strong> &nbsp; {{ absence.lateTime }}</li>
+                                    <li class="list-group-item border-0 ps-0 text-sm"><strong
+                                                class="text-dark">Motif:</strong> &nbsp; {{ absence.reason }}</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <h2>Justificatif : </h2>
+                <div class="text-center">
+                    {% if absence.proofFileName %}
+                        <embed src="{{ vich_uploader_asset(absence, 'proofFile', 'App\\Entity\\Absence' ) }}" width=900
+                               height=600 type='application/pdf'/>
+                    {% else %}
+                        <p>Aucun justificatif</p>
+                    {% endif %}
+                </div>
             </div>
         </div>
-        <div class="col-md-4">
-            <img src="{{ absence.student.picture }}" alt="absence" class="img-responsive">
-            <p>Elève : {{ absence.student.fullName }}</p>
-            <p>Groupe : {{ absence.student.groupClass.name }}</p>
-        </div>
     </div>
-    <hr>
-    <h2>Justificatif : </h2>
-    <div class="text-center">
-    {% if absence.proofFileName %}
-        <embed src="{{ vich_uploader_asset(absence, 'proofFile', 'App\\Entity\\Absence' ) }}" width=900 height=600 type='application/pdf'/>
-    {% else %}
-        <p>Aucun justificatif</p>
-    {% endif %}
-        </div
-
 {% endblock %}
 
 {% block title %}

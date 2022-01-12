@@ -5,76 +5,124 @@
 {% endblock %}
 
 {% block body %}
-    <h1>Rapport {{ absenceReport.id }}</h1>
 
-    <p>Nom du rapport : {{ absenceReport.name }}</p>
-    <p>Date du rapport : {{ absenceReport.date | date }}</p>
-    <p>Durée du cours : {{ absenceReport.courseDuration }}</p>
-    <p>Professeur : {{ absenceReport.teacher.fullNameSubject }}</p>
-    <p>Nombre d'élèves : {{ absenceReport.studentsGroup | length }}</p>
-    <div class="row">
-        <div class="col">
-            <p>Liste des étudiants absents: </p>
-            <ul>
-                {% for student in absenceReport.studentsAbsent %}
-                    <li>{{ student.fullName }}</li>
-                {% endfor %}
-            </ul>
-        </div>
-        <div class="col">
-            <p>Liste des étudiants présents: </p>
-            <ul>
-                {% for student in absenceReport.studentsGroup %}
-                    {% if student not in absenceReport.studentsAbsent %}
+    <div class="container-fluid py-4">
+
+        <h1>Rapport #{{ absenceReport.id }}</h1>
+
+        <ul class="list-group">
+            <li class="list-group-item bg-gray-200 border-0 ps-0 pt-0 text-sm"><strong class="text-dark">Nom du rapport
+                    :</strong> &nbsp; {{ absenceReport.name }}</li>
+            <li class="list-group-item bg-gray-200 border-0 ps-0 text-sm"><strong class="text-dark">Date du rapport
+                    :</strong> &nbsp; {{ absenceReport.date | date }}</li>
+            <li class="list-group-item bg-gray-200 border-0 ps-0 text-sm"><strong class="text-dark">Durée du cours
+                    :</strong> &nbsp; {{ absenceReport.courseDuration }}</li>
+            <li class="list-group-item bg-gray-200 border-0 ps-0 text-sm"><strong class="text-dark">Professeur
+                    :</strong> &nbsp; {{ absenceReport.teacher.fullNameSubject }}</li>
+            <li class="list-group-item bg-gray-200 border-0 ps-0 text-sm"><strong class="text-dark">Nombre d'élèves
+                    :</strong> &nbsp; {{ absenceReport.studentsGroup | length }}</li>
+        </ul>
+
+        <div class="row my-4">
+            <div class="col">
+                <p><strong class="text-dark">Liste des étudiants absents : </strong></p>
+                <ul>
+                    {% for student in absenceReport.studentsAbsent %}
                         <li>{{ student.fullName }}</li>
+                    {% endfor %}
+                </ul>
+            </div>
+            <div class="col">
+                <p><strong class="text-dark">Liste des étudiants présents : </strong></p>
+                <ul>
+                    {% for student in absenceReport.studentsGroup %}
+                        {% if student not in absenceReport.studentsAbsent %}
+                            <li>{{ student.fullName }}</li>
 
-                    {% endif %}
-                {% endfor %}
-            </ul>
+                        {% endif %}
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-12">
+                <div class="card my-4">
+                    <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2">
+                        <div class="bg-gradient-primary shadow-primary border-radius-lg pt-4 pb-3">
+                            <h6 class="text-white text-capitalize ps-3">Liste des absences correspondantes</h6>
+                        </div>
+                    </div>
+                    <div class="card-body px-0 pb-2">
+                        <div class="table-responsive p-0">
+                            <table class="table align-items-center mb-0">
+                                <thead>
+                                <tr>
+                                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
+                                        Photo
+                                    </th>
+                                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
+                                        Nom
+                                    </th>
+                                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">
+                                        Prénom
+                                    </th>
+                                    <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
+                                        Valide ?
+                                    </th>
+                                    <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
+                                        Justificatif
+                                    </th>
+                                    <th class="text-secondary opacity-7"></th>
+                                    {% if is_granted('ROLE_YEAR_RESPONSIBLE') %}
+                                        <th></th>
+                                    {% endif %}
+                                    {% if is_granted('ROLE_ADMIN') %}
+                                        <th></th>
+                                    {% endif %}
+                                </tr>
+                                </thead>
+                                <tbody>
+
+                                {% for absence in absenceReport.absences %}
+                                    <tr>
+                                        <td class="align-middle text-center text-sm"><img
+                                                    src="{{ absence.student.picture }}"
+                                                    class="avatar avatar-sm me-3 border-radius-lg"
+                                                    alt="{{ absence.student.fullName }}"></td>
+                                        <td>{{ absence.student.lastName }}</td>
+                                        <td>{{ absence.student.firstName }}</td>
+                                        <td class="align-middle text-center text-sm">
+                                            {% if absence.isValid == true %}
+                                                <span class="badge bg-success">Justifié</span>
+                                            {% elseif absence.isValid is null %}
+                                                <span class="badge bg-secondary">A Justifié</span>
+                                            {% else %}
+                                                <span class="badge bg-danger">Non Justifié</span>
+                                            {% endif %}
+                                        </td>
+
+                                        <td class="align-middle text-center text-sm">Justificatif</td>
+                                        {% if is_granted('ROLE_YEAR_RESPONSIBLE') %}
+                                            <td class="align-middle text-center text-sm"><a
+                                                        href="{{ path('absence_show', {'id' : absence.id}) }}"
+                                                        class="btn btn-primary">Voir</a></td>
+                                        {% endif %}
+                                        {% if is_granted('ROLE_ADMIN') %}
+                                            <td class="align-middle text-center text-sm">
+                                                <a href="{{ path('absence_edit', {'id' : absence.id}) }}"
+                                                   class="btn btn-primary">Modifier</a>
+                                            </td>
+                                        {% endif %}
+                                    </tr>
+                                {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
-
-    <h2>Liste des absences correspondantes : </h2>
-
-    <div class="table-responsive">
-
-        <table class="table table-striped table-bordered text-center">
-            <thead>
-            <tr>
-                <th>Nom</th>
-                <th>Prénom</th>
-                <th>Valide ?</th>
-                <th>Justificatif</th>
-                <th>Voir</th>
-            </tr>
-            </thead>
-            <tbody>
-            {% for absence in absenceReport.absences %}
-                <tr>
-                    <td>{{ absence.student.lastName }}</td>
-                    <td>{{ absence.student.firstName }}</td>
-                    <td>
-                        {% if absence.isValid == true %}
-                            <span class="badge bg-success">Justifié</span>
-                        {% elseif absence.isValid is null %}
-                            <span class="badge bg-secondary">A Justifié</span>
-                        {% else %}
-                            <span class="badge bg-danger">Non Justifié</span>
-                        {% endif %}
-                    </td>
-
-                    <td>Justificatif</td>
-                    <td><a href="{{ path('absence_show', {'id' : absence.id}) }}" class="btn btn-primary">Voir</a></td>
-                </tr>
-            {% endfor %}
-            </tbody>
-
-        </table>
-    </div>
-
-
-
-
-
 {% endblock %}
 
