@@ -6,6 +6,7 @@ use App\Entity\Absence;
 use App\Entity\AbsencesReport;
 use App\Entity\Group;
 use App\Entity\Teacher;
+use App\Entity\User;
 use App\Form\AbsencesReportType;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\EntityManagerInterface;
@@ -15,15 +16,25 @@ use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Core\User\UserInterface;
 
 class ReportController extends AbstractController
 {
-    #[Route("/reports", name: "report_absences_list")]
-    #[IsGranted('ROLE_YEAR_RESPONSIBLE')]
+
+    #[Route("/reports", name : "report_absences_list")]
+    #[IsGranted('ROLE_TEACHER')]
     public function index(EntityManagerInterface $manager): Response
     {
-        $repositoryReport = $manager->getRepository(AbsencesReport::class);
-        $reports = $repositoryReport->findAll();
+
+        $user = $this->getUser();
+
+        if ($user instanceof Teacher) {
+            $reports = $user->getAbsencesReports();
+        }
+        else{
+            $repositoryReport = $manager->getRepository(AbsencesReport::class);
+            $reports = $repositoryReport->findAll();
+        }
 
         return $this->render('report/list.html.twig', [
             'reports' => $reports
@@ -124,9 +135,26 @@ class ReportController extends AbstractController
     }
 
     #[Route('/report/{id}/edit', name: 'report_absence_edit')]
-    #[IsGranted('ROLE_ADMIN')]
+    #[IsGranted('ROLE_TEACHER')]
     public function editReport(AbsencesReport $absenceReport, Request $request, EntityManagerInterface $manager): Response
     {
+
+        $user = $this->getUser();
+        if ($user instanceof Teacher) {
+            if ($absenceReport->getTeacher()->getId() === $user->getId()){
+                $interval = $absenceReport->getDate()->diff(new \DateTime());
+                $days = $interval->format('%a');
+                $hours = $interval->format('%h');
+                if ($days > 0 || ($hours > 2 + ($absenceReport->getCourseDuration() * 60))){
+                    $this->addFlash('danger', "Vous ne pouvez pas modifier un rapport plus vieux de 1 heure !");
+                    return $this->redirectToRoute('report_absences_list');
+                }
+            }
+        }
+
+
+
+
         $students = $absenceReport->getStudentsGroup();
         $studentsSelected = $absenceReport->getStudentsAbsent();
 
@@ -155,9 +183,16 @@ class ReportController extends AbstractController
     }
 
     #[Route('/report/{id}', name: 'report_absence_show')]
-    #[IsGranted('ROLE_YEAR_RESPONSIBLE')]
+    #[IsGranted('ROLE_TEACHER')]
     public function showReport(AbsencesReport $absenceReport): Response
     {
+
+        $user = $this->getUser();
+        if ($user instanceof Teacher && !($absenceReport->getTeacher() === $user)) {
+            $this->addFlash('danger', "Vous n'avez pas le droit de voir ce rapport !");
+            return $this->redirectToRoute('report_absences_list');
+        }
+
         return $this->render('report/showReport.html.twig', [
             'absenceReport' => $absenceReport
         ]);
