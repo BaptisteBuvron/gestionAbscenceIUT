@@ -6,8 +6,6 @@
  */
 
 import './styles/material-dashboard.min.css'
-import './styles/nucleo-icons.css'
-import './styles/nucleo-svg.css'
 
 // any CSS you import will output into a single css file (app.css in this case)
 import './styles/app.css';

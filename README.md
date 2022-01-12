@@ -15,10 +15,11 @@
 1 ) Création fichier .env.local
 Mettre les informations de sa base de donnée dans le fichier .env.local
 
-2 ) Composer
+2 ) Composer & npm
 
 ```bash
 composer install
+npm install
 ```
 
 3 ) Création de la base de données
@@ -30,7 +31,7 @@ php bin/console doctrine:database:create
 4 ) Faire les migrations de la base de données
 
 ```bash
-php bin/console doctrine:database:migration
+php bin/console doctrine:migrations:migrate
 ```
 
 5 ) Création des fausses données
