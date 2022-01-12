@@ -27,8 +27,12 @@
             <th>Prénom</th>
             <th>Valide ?</th>
             <th>Justificatif</th>
-            <th>Voir</th>
+            {% if is_granted('ROLE_YEAR_RESPONSIBLE') %}
+                <th>Voir</th>
+            {% endif %}
+            {% if is_granted('ROLE_ADMIN') %}
             <th>Modifier</th>
+            {% endif %}
         </tr>
         </thead>
         <tbody>
@@ -53,10 +57,14 @@
                 {% endif %}
             </td>
 
+            {% if is_granted('ROLE_YEAR_RESPONSIBLE') %}
             <td><a href="{{ path('absence_show', {'id' : absence.id}) }}" class="btn btn-primary">Voir</a></td>
+            {% endif %}
+            {% if is_granted('ROLE_ADMIN') %}
             <td>
                 <a href="{{ path('absence_edit', {'id' : absence.id}) }}" class="btn btn-primary">Modifier</a>
             </td>
+            {% endif %}
         </tr>
         {% endfor %}
         </tbody>

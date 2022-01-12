@@ -14,7 +14,7 @@
                 <li class="nav-item">
                     <a class="nav-link" href="{{ path('chart_organization') }}">Trombinoscope</a>
                 </li>
-                {% if is_granted('ROLE_YEAR_RESPONSIBLE')  %}
+                {% if is_granted('ROLE_TEACHER')  %}
                 <li class="nav-item">
                     <a class="nav-link" href="{{ path('report_absences_list') }}">Rapports d'absences</a>
                 </li>

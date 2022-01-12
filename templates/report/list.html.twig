@@ -13,8 +13,10 @@
                 <th>Nombre d'absents</th>
                 <th>Nombre absences non justifiées</th>
                 <th>Voir</th>
-                {% if is_granted('ROLE_ADMIN') %}
+                {% if is_granted('ROLE_TEACHER') %}
                     <th>Modifier</th>
+                {% endif %}
+                {% if is_granted('ROLE_ADMIN') %}
                     <th>Supprimer</th>
                 {% endif %}
 
@@ -29,8 +31,10 @@
                     <td>{{ report.studentsAbsent | length }}</td>
                     <td>{{ report.getNumberUnjustifiedAbsences }}</td>
                     <td><a class="btn btn-primary" href="{{ path('report_absence_show', {'id': report.id}) }}">Voir</a></td>
-                    {% if is_granted('ROLE_ADMIN') %}
+                    {% if is_granted('ROLE_TEACHER') %}
                         <td><a class="btn btn-primary" href="{{ path('report_absence_edit', {'id': report.id}) }}">Modifier</a></td>
+                    {% endif %}
+                    {% if is_granted('ROLE_ADMIN') %}
                         <td><a class="btn btn-danger" href="{{ path('report_absence_delete', {'id': report.id}) }}" onclick="return confirm('Etes vous vraiment sûre ?')">Supprimer</a></td>
                     {% endif %}
 
