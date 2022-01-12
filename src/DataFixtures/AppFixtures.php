@@ -33,7 +33,7 @@ class AppFixtures extends Fixture
         $teacher->setFirstName('John');
         $teacher->setLastName('Doe');
         $teacher->setEmail('john@doe.fr');
-        $teacher->setPassword($this->passwordHasher->hashPassword($teacher,'password'));
+        $teacher->setPassword($this->passwordHasher->hashPassword($teacher, 'password'));
         $teacher->setRoles(['ROLE_TEACHER']);
         $teacher->setSubject("Computer Science");
         $manager->persist($teacher);
@@ -41,7 +41,7 @@ class AppFixtures extends Fixture
         $admin->setFirstName('Jane');
         $admin->setLastName('Doe');
         $admin->setEmail('jane@doe.fr');
-        $admin->setPassword($this->passwordHasher->hashPassword($admin,'password'));
+        $admin->setPassword($this->passwordHasher->hashPassword($admin, 'password'));
         $admin->setRoles(['ROLE_ADMIN']);
         $manager->persist($admin);
 
@@ -49,7 +49,7 @@ class AppFixtures extends Fixture
         $yearResponsable->setFirstName('Petter');
         $yearResponsable->setLastName('Doe');
         $yearResponsable->setEmail('petter@doe.fr');
-        $yearResponsable->setPassword($this->passwordHasher->hashPassword($yearResponsable,'password'));
+        $yearResponsable->setPassword($this->passwordHasher->hashPassword($yearResponsable, 'password'));
         $yearResponsable->setRoles(['ROLE_YEAR_RESPONSIBLE']);
         $manager->persist($yearResponsable);
 
@@ -87,14 +87,14 @@ class AppFixtures extends Fixture
 
 
         $genres = ['male', 'female'];
-        $groups = [$tp11A,$tp11B, $tp12A, $tp12B];
+        $groups = [$tp11A, $tp11B, $tp12A, $tp12B];
         $idGroup = 0;
-        for ($i = 0; $i <=10 ; $i++){
+        for ($i = 0; $i <= 10; $i++) {
             $genre = $faker->randomElement($genres);
             $student = new Student();
             $student->setFirstName($faker->firstName($genre));
             $student->setLastName($faker->lastName($genre));
-            $student->setPicture('https://randomuser.me/api/portraits/'. ($genre === 'male' ? 'men/' : 'women/').$faker->numberBetween(1,99).'.jpg');
+            $student->setPicture('https://randomuser.me/api/portraits/' . ($genre === 'male' ? 'men/' : 'women/') . $faker->numberBetween(1, 99) . '.jpg');
             $student->setGroupClass($groups[$idGroup]);
             $idGroup++;
             if ($idGroup === 4) {
@@ -114,6 +114,7 @@ class AppFixtures extends Fixture
         $manager->flush();
     }
 }
+
 {
 
 }

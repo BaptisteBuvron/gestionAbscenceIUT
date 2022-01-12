@@ -21,8 +21,7 @@ class ChooseGroupType extends AbstractType
                 'required' => true,
                 'multiple' => false,
                 'expanded' => false,
-            ])
-        ;
+            ]);
     }
 
 

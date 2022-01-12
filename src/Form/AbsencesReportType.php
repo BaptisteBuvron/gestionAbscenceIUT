@@ -2,6 +2,7 @@
 
 namespace App\Form;
 
+use App\Entity\Teacher;
 use App\Repository\TeacherRepository;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
@@ -11,7 +12,6 @@ use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use App\Entity\Teacher;
 
 class AbsencesReportType extends AbstractType
 {
@@ -35,7 +35,7 @@ class AbsencesReportType extends AbstractType
                     'placeholder' => 'Date du cours',
                 ],
             ])
-            ->add('courseDuration', IntegerType::class,[
+            ->add('courseDuration', IntegerType::class, [
                 'label' => 'Durée du cours (minutes)',
                 'required' => true,
                 'empty_data' => 120,
@@ -51,18 +51,21 @@ class AbsencesReportType extends AbstractType
                 },
                 'disabled' => $options['disabledChoiceTeacher'],
             ])
-        ->add('students', ChoiceType::class, [
-            'label' => 'Élèves',
-            'mapped' => false,
-            'multiple' => true,
-            'expanded' => true,
-            'required' => false,
-            'choices' => $options['students'],
-            'choice_label' => function ($choice) {
-                return $choice->getFullname();
-            },
-            'data' => $options['studentsSelected'],
-        ]);
+            ->add('students', ChoiceType::class, [
+                'label' => 'Élèves',
+                'mapped' => false,
+                'multiple' => true,
+                'expanded' => true,
+                'required' => false,
+                'choices' => $options['students'],
+                'choice_label' => function ($choice) {
+                    return $choice->getFullName();
+                },
+                'choice_attr' => function ($choice) {
+                    return ['style' => 'background-image: url(' . $choice->getPicture() . ')'];
+                },
+                'data' => $options['studentsSelected']
+            ]);
     }
 
     public function configureOptions(OptionsResolver $resolver): void

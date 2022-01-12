@@ -68,18 +68,6 @@ class Group
         return $this;
     }
 
-    public function getGroupParent(): ?self
-    {
-        return $this->groupParent;
-    }
-
-    public function setGroupParent(?self $groupParent): self
-    {
-        $this->groupParent = $groupParent;
-
-        return $this;
-    }
-
     /**
      * @return Collection|self[]
      */
@@ -110,12 +98,16 @@ class Group
         return $this;
     }
 
-    /**
-     * @return Collection|Student[]
-     */
-    public function getStudents(): Collection
+    public function getGroupParent(): ?self
     {
-        return $this->students;
+        return $this->groupParent;
+    }
+
+    public function setGroupParent(?self $groupParent): self
+    {
+        $this->groupParent = $groupParent;
+
+        return $this;
     }
 
     public function addStudent(Student $student): self
@@ -166,6 +158,14 @@ class Group
         }
 
         return $students;
+    }
+
+    /**
+     * @return Collection|Student[]
+     */
+    public function getStudents(): Collection
+    {
+        return $this->students;
     }
 
     public function __toString()

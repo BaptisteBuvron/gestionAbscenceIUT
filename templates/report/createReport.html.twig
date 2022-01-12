@@ -2,17 +2,52 @@
 
 
 {% block title %}
-Créer un rapport
+    Créer un rapport
 {% endblock %}
 
 
 {% form_theme form 'absence/_absence.html.twig' %}
 
 {% block body %}
-        <h1>Création d'un rapport d'absences</h1>
-        {{ form_start(form) }}
-        {{ form_widget(form) }}
-        <button type="submit" class="btn btn-primary">Créer</button>
-        {{ form_end(form) }}
+    <h1>Création d'un rapport d'absences</h1>
+    {{ form_start(form) }}
+    <div class="mb-3">
+        {{ form_label(form.name) }}
+        {{ form_widget(form.name) }}
+        <div class="form-error">
+            {{ form_errors(form.name) }}
+        </div>
+    </div>
+
+    <div class="mb-3">
+        {{ form_label(form.date) }}
+        {{ form_widget(form.date) }}
+        <div class="form-error">
+            {{ form_errors(form.date) }}
+        </div>
+    </div>
+
+    <div class="mb-3">
+        {{ form_label(form.courseDuration) }}
+        {{ form_widget(form.courseDuration) }}
+        <div class="form-error">
+            {{ form_errors(form.courseDuration) }}
+        </div>
+    </div>
+
+    <div class="mb-3">
+        {{ form_label(form.teacher) }}
+        {{ form_widget(form.teacher) }}
+        <div class="form-error">
+            {{ form_errors(form.teacher) }}
+        </div>
+    </div>
+
+    <div class="mb-3">
+        {{ form_row(form.students, { 'attr': {'class': 'grid_trombi row'} }) }}
+    </div>
+
+    <button type="submit" class="btn btn-primary">Créer</button>
+    {{ form_end(form) }}
 
 {% endblock %}

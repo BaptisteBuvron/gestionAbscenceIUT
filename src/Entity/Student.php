@@ -82,22 +82,16 @@ class Student
         return $this;
     }
 
-    public function setPicture(string $picture): self
-    {
-        $this->picture = $picture;
-
-        return $this;
-    }
-
-
     public function getPicture(): ?string
     {
         return $this->picture;
     }
 
-    public function getFullName(): string
+    public function setPicture(string $picture): self
     {
-        return $this->lastName . ' ' . $this->firstName;
+        $this->picture = $picture;
+
+        return $this;
     }
 
     /**
@@ -133,6 +127,11 @@ class Student
     public function __toString(): string
     {
         return $this->getFullName() . " - " . $this->getGroupClass()->getName();
+    }
+
+    public function getFullName(): string
+    {
+        return $this->lastName . ' ' . $this->firstName;
     }
 
     public function getGroupClass(): ?Group
