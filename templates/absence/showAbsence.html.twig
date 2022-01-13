@@ -22,11 +22,11 @@
                             {{ absence.student.fullName }}
 
                             {% if absence.isValid == true %}
-                                <span class="badge badge-success">Justifié</span>
+                                <span class="badge badge-success bg-success">Justifié</span>
                             {% elseif absence.isValid is null %}
-                                <span class="badge bg-secondary">A Justifié</span>
+                                <span class="badge bg-secondary bg-secondary">A Justifié</span>
                             {% else %}
-                                <span class="badge bg-danger">Non Justifié</span>
+                                <span class="badge bg-danger bg-danger">Non Justifié</span>
                             {% endif %}
                         </h5>
                         <p class="mb-0 font-weight-normal text-sm">
