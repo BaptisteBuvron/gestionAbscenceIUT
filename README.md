@@ -40,13 +40,13 @@ php bin/console doctrine:migrations:migrate
 php bin/console doctrine:fixtures:load
 ```
 
-5 ) UI
+6 ) UI
 
 ```bash
 npm run dev-server
 ```
 
-5 ) Lancer le serveur de développement
+7 ) Lancer le serveur de développement
 
 ```bash
 php -S localhost:8000 -t public/
